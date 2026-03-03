@@ -1,8 +1,3 @@
-/* =============================================
-   TASK MANAGER — HYPER CSS
-   Holographic • Aurora • Chromatic • 3D
-   ============================================= */
-
 :root {
     --bg: #050508;
     --bg-card: rgba(12, 12, 20, 0.6);
@@ -51,7 +46,6 @@ body {
     line-height: 1.6;
 }
 
-/* =============== NOISE OVERLAY =============== */
 .noise-overlay {
     position: fixed;
     inset: 0;
@@ -63,7 +57,6 @@ body {
     background-size: 128px;
 }
 
-/* =============== AURORA CANVAS =============== */
 #auroraCanvas {
     position: fixed;
     inset: 0;
@@ -73,7 +66,6 @@ body {
     pointer-events: none;
 }
 
-/* =============== MORPHING BLOBS =============== */
 .blob-container {
     position: fixed;
     inset: 0;
@@ -136,7 +128,6 @@ body {
     100% { border-radius: 50% 50% 70% 30% / 50% 50% 30% 70%; transform: translate(40px, -40px) scale(0.95); }
 }
 
-/* =============== GRID OVERLAY =============== */
 .grid-overlay {
     position: fixed;
     inset: 0;
@@ -150,7 +141,6 @@ body {
     -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 30%, transparent 70%);
 }
 
-/* =============== HERO SECTION =============== */
 .hero {
     position: relative;
     z-index: 1;
@@ -168,7 +158,6 @@ body {
     padding: 2rem;
 }
 
-/* Floating Geometric Shapes */
 .geo-shapes {
     position: absolute;
     inset: 0;
@@ -250,7 +239,6 @@ body {
     text-align: center;
 }
 
-/* Tag */
 .hero-tag {
     display: inline-flex;
     align-items: center;
@@ -282,7 +270,6 @@ body {
     50% { opacity: 0.4; transform: scale(0.6); }
 }
 
-/* Title */
 .hero-title {
     font-family: var(--font-display);
     font-size: clamp(4rem, 12vw, 10rem);
@@ -332,7 +319,6 @@ body {
     100% { background-position: 0% 50%; filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.3)); }
 }
 
-/* Chromatic Aberration on hover */
 .hero-title:hover .char-wrap {
     animation: charSlideUp 0s forwards, chromaGlitch 0.15s steps(2) 3;
 }
@@ -366,7 +352,6 @@ body {
     50% { border-color: transparent; }
 }
 
-/* Metrics / Stats */
 .hero-metrics {
     display: flex;
     gap: 1.5rem;
@@ -384,7 +369,6 @@ body {
     overflow: hidden;
 }
 
-/* HOLOGRAPHIC Card */
 .holo-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
@@ -474,7 +458,6 @@ body {
     margin-top: 4px;
 }
 
-/* Scroll CTA */
 .scroll-cta {
     display: inline-flex;
     flex-direction: column;
@@ -501,7 +484,6 @@ body {
     50% { transform: translateY(8px); }
 }
 
-/* =============== APP SECTION =============== */
 .app-section {
     position: relative;
     z-index: 1;
@@ -511,7 +493,6 @@ body {
     margin: 0 auto;
 }
 
-/* Command Bar */
 .command-bar {
     display: flex;
     align-items: center;
@@ -536,7 +517,6 @@ body {
     gap: 14px;
 }
 
-/* Hologram Logo */
 .logo-hologram {
     width: 40px;
     height: 40px;
@@ -594,7 +574,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* Filter Pills */
 .cmd-filters {
     display: flex;
     gap: 6px;
@@ -645,7 +624,6 @@ body {
     box-shadow: 0 0 6px white;
 }
 
-/* =============== BUTTONS =============== */
 .btn {
     padding: 10px 24px;
     border: none;
@@ -723,7 +701,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* =============== SEARCH =============== */
 .search-container { margin-bottom: 2rem; }
 
 .search-box {
@@ -767,7 +744,6 @@ body {
     font-size: 0.7rem;
 }
 
-/* =============== TASK GRID =============== */
 .task-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -775,7 +751,6 @@ body {
     perspective: 2000px;
 }
 
-/* =============== TASK CARD — HOLOGRAPHIC 3D =============== */
 .task-card {
     position: relative;
     padding: 1.5rem;
@@ -787,7 +762,7 @@ body {
     transition: all 0.5s var(--ease);
     transform-style: preserve-3d;
     overflow: hidden;
-    /* Entrance animation */
+    
     opacity: 0;
     transform: translateY(60px) rotateX(15deg) scale(0.9);
     animation: cardReveal 0.8s var(--ease-out-expo) forwards;
@@ -804,7 +779,6 @@ body {
     to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
 }
 
-/* Holographic Rainbow Border on Hover */
 .task-card::before {
     content: '';
     position: absolute;
@@ -825,7 +799,6 @@ body {
     opacity: 0.4;
 }
 
-/* Inner glow follow mouse */
 .task-card::after {
     content: '';
     position: absolute;
@@ -854,7 +827,6 @@ body {
         0 0 40px rgba(124, 58, 237, 0.06);
 }
 
-/* Priority Left Stripe — glowing */
 .task-card .priority-stripe {
     position: absolute;
     top: 0;
@@ -874,7 +846,6 @@ body {
     50% { box-shadow: 0 0 25px rgba(251, 113, 133, 0.7); }
 }
 
-/* Completed state */
 .task-card.completed {
     opacity: 0.5;
 }
@@ -884,7 +855,6 @@ body {
     text-decoration-color: var(--text-muted);
 }
 
-/* Overdue state */
 .task-card.overdue {
     animation: cardReveal 0.8s var(--ease-out-expo) forwards, overdueGlow 3s ease-in-out infinite;
 }
@@ -894,7 +864,6 @@ body {
     50% { box-shadow: 0 0 25px rgba(244, 63, 94, 0.12); }
 }
 
-/* Card internals */
 .task-card-header {
     display: flex;
     justify-content: space-between;
@@ -912,7 +881,6 @@ body {
     transition: 0.3s;
 }
 
-/* Custom Checkbox */
 .task-checkbox {
     position: relative;
     flex-shrink: 0;
@@ -964,7 +932,6 @@ body {
     overflow: hidden;
 }
 
-/* Tags */
 .task-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 
 .tag {
@@ -1038,7 +1005,6 @@ body {
     50% { opacity: 0.5; }
 }
 
-/* Progress Bar */
 .progress-track {
     width: 100%;
     height: 2px;
@@ -1071,7 +1037,6 @@ body {
     50% { opacity: 1; }
 }
 
-/* Card Actions */
 .task-actions {
     display: flex;
     gap: 6px;
@@ -1109,7 +1074,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* =============== EMPTY STATE =============== */
 .empty-state {
     text-align: center;
     padding: 5rem 2rem;
@@ -1182,7 +1146,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* =============== MODALS =============== */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -1287,7 +1250,6 @@ body {
     transform: rotate(90deg);
 }
 
-/* Delete visual */
 .delete-visual {
     width: 80px;
     height: 80px;
@@ -1315,7 +1277,6 @@ body {
 
 .delete-modal { max-width: 400px; text-align: center; }
 
-/* Reminder */
 .reminder-modal { text-align: center; }
 
 .reminder-bell {
@@ -1363,7 +1324,6 @@ body {
 .reminder-item-title { font-weight: 600; font-size: 0.85rem; }
 .reminder-item-date { font-size: 0.75rem; color: #fbbf24; font-family: var(--font-mono); }
 
-/* =============== FORM =============== */
 .field { margin-bottom: 1.25rem; }
 
 .field label {
@@ -1425,7 +1385,6 @@ body {
     margin-top: 1.5rem;
 }
 
-/* =============== TOASTS =============== */
 .toast-container {
     position: fixed;
     top: 2rem;
@@ -1478,7 +1437,6 @@ body {
     100% { opacity: 0; transform: translateX(80px) scale(0.9); }
 }
 
-/* =============== FOOTER =============== */
 .footer {
     position: relative;
     z-index: 1;
@@ -1518,7 +1476,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* =============== SCROLL ANIMATIONS =============== */
 .scroll-anim {
     opacity: 0;
     transform: translateY(50px);
@@ -1535,12 +1492,10 @@ body {
 .scroll-anim[data-delay="300"] { transition-delay: 0.3s; }
 .scroll-anim[data-delay="400"] { transition-delay: 0.4s; }
 
-/* =============== MAGNETIC EFFECT (handled by JS) =============== */
 .magnetic { transition: transform 0.3s var(--ease); }
 
 .hidden { display: none !important; }
 
-/* =============== RESPONSIVE =============== */
 @media (max-width: 900px) {
     .command-bar { flex-direction: column; align-items: stretch; text-align: center; }
     .cmd-left { justify-content: center; }

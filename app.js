@@ -1,16 +1,8 @@
-/* =============================================
-   TASK MANAGER — APP LOGIC
-   Aurora BG • Magnetic Cursor • 3D Tilt
-   Text Scramble • Holographic Cards
-   ============================================= */
-
-// ========== STATE ==========
 let tasks = [];
 let currentFilter = 'all';
 let deleteTargetId = null;
 let mouseX = 0, mouseY = 0;
 
-// ========== INIT ==========
 document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
     renderTasks();
@@ -26,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(checkReminders, 60000);
 });
 
-// ========== LOCAL STORAGE ==========
 function loadTasks() {
     try {
         const d = localStorage.getItem('taskmanager_tasks');
@@ -38,7 +29,6 @@ function saveTasks() {
     localStorage.setItem('taskmanager_tasks', JSON.stringify(tasks));
 }
 
-// ========== CRUD ==========
 function generateId() {
     return 'task_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
@@ -76,7 +66,6 @@ function toggleComplete(id) {
     }
 }
 
-// ========== FILTER / SEARCH ==========
 function setFilter(f) {
     currentFilter = f;
     document.querySelectorAll('.pill').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
@@ -105,7 +94,6 @@ function getFilteredTasks() {
     return arr;
 }
 
-// ========== RENDER ==========
 function renderTasks() {
     const grid = document.getElementById('taskGrid');
     const empty = document.getElementById('emptyState');
@@ -139,7 +127,6 @@ function renderCard(task) {
         else timeTag = `<span class="tag tag-time safe">${daysLeft}D LEFT</span>`;
     }
 
-    // Progress
     let prog = 0;
     if (task.completed) prog = 100;
     else {
@@ -182,7 +169,6 @@ function renderCard(task) {
     </div>`;
 }
 
-// ========== STATS ==========
 function updateStats() {
     const now = new Date(); now.setHours(0,0,0,0);
     animateNum('totalTasksStat', tasks.length);
@@ -207,7 +193,6 @@ function animateNum(id, target) {
     })(start);
 }
 
-// ========== MODALS ==========
 function openModal(editId = null) {
     const modal = document.getElementById('taskModal');
     const form = document.getElementById('taskForm');
@@ -267,7 +252,6 @@ function confirmDelete() {
     if (deleteTargetId) { deleteTask(deleteTargetId); closeDeleteModal(); }
 }
 
-// ========== REMINDERS ==========
 function checkReminders() {
     const now = new Date(); now.setHours(0,0,0,0);
     const upcoming = tasks.filter(t => {
@@ -299,7 +283,6 @@ function showReminder(list) {
 }
 function closeReminder() { document.getElementById('reminderModal').classList.add('hidden'); }
 
-// ========== TOASTS ==========
 function showToast(msg, type = 'info') {
     const c = document.getElementById('toastContainer');
     const icons = { success:'fa-check-circle', error:'fa-skull', warning:'fa-exclamation-circle', info:'fa-info-circle' };
@@ -310,11 +293,6 @@ function showToast(msg, type = 'info') {
     setTimeout(() => { t.classList.add('exit'); setTimeout(() => t.remove(), 300); }, 3000);
 }
 
-// =============================
-//  VISUAL EFFECTS
-// =============================
-
-// ========== AURORA / NEBULA CANVAS ==========
 function initAuroraCanvas() {
     const canvas = document.getElementById('auroraCanvas');
     const ctx = canvas.getContext('2d');
@@ -327,7 +305,6 @@ function initAuroraCanvas() {
     resize();
     window.addEventListener('resize', resize);
 
-    // Particles with trails
     const particles = [];
     const PCOUNT = Math.min(60, Math.floor(window.innerWidth / 25));
 
@@ -343,16 +320,15 @@ function initAuroraCanvas() {
             this.life = Math.random() * 300 + 200;
             this.maxLife = this.life;
             this.size = Math.random() * 2 + 0.5;
-            this.hue = Math.random() * 60 + 250; // purple-cyan range
+            this.hue = Math.random() * 60 + 250;
             this.trail = [];
         }
         update() {
-            // Flowing force field
+
             const angle = (Math.sin(this.x * 0.003 + time * 0.001) + Math.cos(this.y * 0.003 + time * 0.0012)) * Math.PI;
             this.vx += Math.cos(angle) * 0.015;
             this.vy += Math.sin(angle) * 0.015;
 
-            // Mouse repulsion
             const dx = mouseX - this.x, dy = mouseY - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 250) {
@@ -361,14 +337,12 @@ function initAuroraCanvas() {
                 this.vy -= dy / dist * force;
             }
 
-            // Damping
             this.vx *= 0.98;
             this.vy *= 0.98;
 
             this.x += this.vx;
             this.y += this.vy;
 
-            // Trail
             this.trail.push({ x: this.x, y: this.y });
             if (this.trail.length > 20) this.trail.shift();
 
@@ -378,7 +352,7 @@ function initAuroraCanvas() {
         }
         draw() {
             const alpha = Math.min(this.life / 50, (this.maxLife - this.life) / 50, 1) * 0.6;
-            // Trail
+
             if (this.trail.length > 2) {
                 ctx.beginPath();
                 ctx.moveTo(this.trail[0].x, this.trail[0].y);
@@ -389,12 +363,12 @@ function initAuroraCanvas() {
                 ctx.lineWidth = this.size * 0.8;
                 ctx.stroke();
             }
-            // Dot
+
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fillStyle = `hsla(${this.hue}, 80%, 70%, ${alpha})`;
             ctx.fill();
-            // Glow
+
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
             ctx.fillStyle = `hsla(${this.hue}, 80%, 60%, ${alpha * 0.08})`;
@@ -404,7 +378,6 @@ function initAuroraCanvas() {
 
     for (let i = 0; i < PCOUNT; i++) particles.push(new AuroraParticle());
 
-    // Aurora waves
     function drawAurora() {
         for (let wave = 0; wave < 3; wave++) {
             ctx.beginPath();
@@ -433,7 +406,6 @@ function initAuroraCanvas() {
         }
     }
 
-    // Connections
     function drawConnections() {
         for (let i = 0; i < particles.length; i++) {
             for (let j = i + 1; j < particles.length; j++) {
@@ -467,7 +439,6 @@ function initAuroraCanvas() {
     animate();
 }
 
-// ========== MOUSE TRACKER (for aurora + parallax) ==========
 function initMouseTracker() {
     document.addEventListener('mousemove', e => {
         mouseX = e.clientX;
@@ -475,7 +446,6 @@ function initMouseTracker() {
     });
 }
 
-// ========== MAGNETIC ELEMENTS ==========
 function initMagneticElements() {
     document.querySelectorAll('.magnetic').forEach(el => {
         el.addEventListener('mousemove', e => {
@@ -490,7 +460,6 @@ function initMagneticElements() {
     });
 }
 
-// ========== 3D TILT ON TASK CARDS ==========
 function init3DTilt() {
     document.querySelectorAll('.task-card').forEach(card => {
         card.addEventListener('mousemove', e => {
@@ -506,7 +475,6 @@ function init3DTilt() {
             card.style.setProperty('--mouse-x', x + 'px');
             card.style.setProperty('--mouse-y', y + 'px');
 
-            // Holographic angle for conic gradient
             const angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
             card.style.setProperty('--card-angle', angle + 'deg');
         });
@@ -517,7 +485,6 @@ function init3DTilt() {
     });
 }
 
-// ========== SCROLL ANIMATIONS ==========
 function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -528,7 +495,6 @@ function initScrollAnimations() {
     document.querySelectorAll('.scroll-anim').forEach(el => observer.observe(el));
 }
 
-// ========== PARALLAX GEO SHAPES ==========
 function initParallaxGeo() {
     const geos = document.querySelectorAll('.geo');
     const speeds = [0.02, 0.03, 0.015, 0.025, 0.035, 0.02];
@@ -546,7 +512,6 @@ function initParallaxGeo() {
     });
 }
 
-// ========== HOLOGRAPHIC ANGLE ON HOLO-CARDS ==========
 document.addEventListener('mousemove', e => {
     document.querySelectorAll('.holo-card').forEach(card => {
         const r = card.getBoundingClientRect();
@@ -557,7 +522,6 @@ document.addEventListener('mousemove', e => {
     });
 });
 
-// ========== TYPING EFFECT ==========
 function initTypingEffect() {
     const el = document.querySelector('.typed-text');
     if (!el) return;
@@ -588,7 +552,6 @@ function initTypingEffect() {
     setTimeout(type, 1000);
 }
 
-// ========== KEYBOARD SHORTCUTS ==========
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', e => {
         if (e.ctrlKey && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
@@ -597,7 +560,6 @@ function initKeyboardShortcuts() {
     });
 }
 
-// ========== SMOOTH SCROLL ==========
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
         e.preventDefault();
@@ -606,7 +568,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     });
 });
 
-// ========== HELPERS ==========
 function esc(s) {
     const d = document.createElement('div');
     d.appendChild(document.createTextNode(s));
