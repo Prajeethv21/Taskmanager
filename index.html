@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Noise Grain Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Aurora / Nebula Canvas -->
+    <canvas id="auroraCanvas"></canvas>
+
+    <!-- Morphing Blobs -->
+    <div class="blob-container">
+        <div class="morph-blob blob-1"></div>
+        <div class="morph-blob blob-2"></div>
+        <div class="morph-blob blob-3"></div>
+    </div>
+
+    <!-- Subtle Grid -->
+    <div class="grid-overlay"></div>
+
+    <!-- Toasts -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Reminder Modal -->
+    <div id="reminderModal" class="modal-overlay hidden">
+        <div class="modal reminder-modal">
+            <div class="modal-glow"></div>
+            <div class="reminder-bell"><i class="fas fa-bell"></i></div>
+            <h2 class="modal-title">Upcoming Deadlines</h2>
+            <div id="reminderList" class="reminder-list"></div>
+            <button class="btn btn-primary" onclick="closeReminder()">
+                <span>Acknowledged</span><div class="btn-shimmer"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ======= HERO ======= -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="geo-shapes">
+                <div class="geo geo-1"></div>
+                <div class="geo geo-2"></div>
+                <div class="geo geo-3"></div>
+                <div class="geo geo-4"></div>
+                <div class="geo geo-5"></div>
+                <div class="geo geo-6"></div>
+            </div>
+
+            <div class="hero-content">
+                <div class="hero-tag scroll-anim">
+                    <div class="tag-pulse"></div>
+                    <span>TASK MANAGEMENT SYSTEM</span>
+                </div>
+
+                <h1 class="hero-title scroll-anim" data-delay="100">
+                    <span class="title-row">
+                        <span class="char-wrap" data-text="TASK">TASK</span>
+                    </span>
+                    <span class="title-row glow-text">
+                        <span class="char-wrap" data-text="MANAGER">MANAGER</span>
+                    </span>
+                </h1>
+
+                <p class="hero-desc scroll-anim" data-delay="200">
+                    A hyper-visual command center for your daily missions.
+                    <br><span class="typed-text"></span>
+                </p>
+
+                <div class="hero-metrics scroll-anim" data-delay="300">
+                    <div class="metric holo-card magnetic">
+                        <div class="metric-value" id="totalTasksStat">0</div>
+                        <div class="metric-label">TOTAL</div>
+                        <div class="holo-shine"></div>
+                    </div>
+                    <div class="metric holo-card magnetic">
+                        <div class="metric-value" id="completedStat">0</div>
+                        <div class="metric-label">DONE</div>
+                        <div class="holo-shine"></div>
+                    </div>
+                    <div class="metric holo-card magnetic">
+                        <div class="metric-value" id="pendingStat">0</div>
+                        <div class="metric-label">PENDING</div>
+                        <div class="holo-shine"></div>
+                    </div>
+                    <div class="metric holo-card magnetic">
+                        <div class="metric-value" id="overdueStat">0</div>
+                        <div class="metric-label">OVERDUE</div>
+                        <div class="holo-shine"></div>
+                    </div>
+                </div>
+
+                <a href="#app" class="scroll-cta scroll-anim" data-delay="400">
+                    <div class="cta-text">ENTER DASHBOARD</div>
+                    <div class="cta-arrow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= APP ======= -->
+    <section class="app-section" id="app">
+        <div class="command-bar scroll-anim">
+            <div class="cmd-left">
+                <div class="logo-hologram">
+                    <div class="holo-ring ring-1"></div>
+                    <div class="holo-ring ring-2"></div>
+                    <div class="holo-ring ring-3"></div>
+                    <div class="holo-core"><i class="fas fa-tasks"></i></div>
+                </div>
+                <span class="cmd-title">Task Manager</span>
+            </div>
+            <div class="cmd-filters">
+                <button class="pill active" data-filter="all" onclick="setFilter('all')">
+                    <span class="pill-dot"></span>All
+                </button>
+                <button class="pill" data-filter="pending" onclick="setFilter('pending')">
+                    <span class="pill-dot"></span>Active
+                </button>
+                <button class="pill" data-filter="completed" onclick="setFilter('completed')">
+                    <span class="pill-dot"></span>Done
+                </button>
+                <button class="pill" data-filter="overdue" onclick="setFilter('overdue')">
+                    <span class="pill-dot"></span>Overdue
+                </button>
+            </div>
+            <button class="btn btn-create magnetic" onclick="openModal()">
+                <i class="fas fa-plus"></i><span>New Task</span>
+                <div class="btn-shimmer"></div>
+            </button>
+        </div>
+
+        <div class="search-container scroll-anim" data-delay="100">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search tasks..." oninput="searchTasks()">
+                <div class="search-keys"><kbd>Ctrl+K</kbd></div>
+            </div>
+        </div>
+
+        <div class="task-grid" id="taskGrid"></div>
+
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-visual">
+                <div class="empty-rings">
+                    <div class="e-ring e-ring-1"></div>
+                    <div class="e-ring e-ring-2"></div>
+                    <div class="e-ring e-ring-3"></div>
+                </div>
+                <div class="empty-icon"><i class="fas fa-ghost"></i></div>
+            </div>
+            <h3>NO TASKS FOUND</h3>
+            <p>The void awaits your first creation</p>
+            <button class="btn btn-primary magnetic" onclick="openModal()">
+                <i class="fas fa-plus"></i><span>Create Task</span>
+                <div class="btn-shimmer"></div>
+            </button>
+        </div>
+    </section>
+
+    <!-- ADD/EDIT MODAL -->
+    <div class="modal-overlay hidden" id="taskModal">
+        <div class="modal task-modal">
+            <div class="modal-glow"></div>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">
+                    <i class="fas fa-plus-circle"></i> Add New Task
+                </h2>
+                <button class="close-btn magnetic" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="taskForm" onsubmit="handleSubmit(event)">
+                <div class="field">
+                    <label><i class="fas fa-heading"></i> Title</label>
+                    <input type="text" id="taskTitle" placeholder="What needs to be done?" required>
+                </div>
+                <div class="field">
+                    <label><i class="fas fa-align-left"></i> Description</label>
+                    <textarea id="taskDesc" rows="3" placeholder="Add details..."></textarea>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label><i class="fas fa-calendar"></i> Due Date</label>
+                        <input type="date" id="taskDate" required>
+                    </div>
+                    <div class="field">
+                        <label><i class="fas fa-flag"></i> Priority</label>
+                        <select id="taskPriority">
+                            <option value="low">🟢 Low</option>
+                            <option value="medium" selected>🟡 Medium</option>
+                            <option value="high">🔴 High</option>
+                            <option value="critical">💀 Critical</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><i class="fas fa-tag"></i> Category</label>
+                    <select id="taskCategory">
+                        <option value="work">💼 Work</option>
+                        <option value="personal">🏠 Personal</option>
+                        <option value="health">💪 Health</option>
+                        <option value="learning">📚 Learning</option>
+                        <option value="finance">💰 Finance</option>
+                        <option value="other">🎯 Other</option>
+                    </select>
+                </div>
+                <input type="hidden" id="editTaskId" value="">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span>Add Task</span><div class="btn-shimmer"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div class="modal-overlay hidden" id="deleteModal">
+        <div class="modal delete-modal">
+            <div class="modal-glow danger"></div>
+            <div class="delete-visual">
+                <div class="delete-pulse"></div>
+                <i class="fas fa-radiation"></i>
+            </div>
+            <h2 class="modal-title danger">Delete Task?</h2>
+            <p class="modal-desc">This cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeDeleteModal()">Keep</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i><span>Delete</span>
+                    <div class="btn-shimmer"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer scroll-anim">
+        <div class="footer-line"></div>
+        <div class="footer-inner">
+            <span class="footer-brand">Task Manager</span>
+            <span class="footer-info"> &bull;   &bull; </span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
